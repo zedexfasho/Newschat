@@ -18,9 +18,22 @@ def form_valid(self, form):
 class EntryListView(LoginRequiredMixin, ListView):
     model = Entry
     template_name = 'journal/entry_list.html'
+    context_object_name = 'entries'
+    paginate_by = 12
 
     def get_queryset(self):
-        return Entry.objects.filter(author=self.request.user).order_by('-created_at')
+        queryset = Entry.objects.all()  # Récupère toutes les entrées pour le moment
+        date_filter = self.request.GET.get('date')
+        
+        if date_filter:
+            queryset = queryset.filter(created_at__date=date_filter)
+        
+        return queryset.order_by('-created_at')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_date'] = self.request.GET.get('date', '')
+        return context
     
 class EntryCreateView(LoginRequiredMixin, CreateView):
     model = Entry
@@ -54,6 +67,8 @@ class EntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     
 
 def register_view(request):
+    if request.user.is_authenticated:
+        return redirect('entry_list')
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():

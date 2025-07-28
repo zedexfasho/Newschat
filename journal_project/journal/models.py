@@ -13,8 +13,11 @@ class Entry(models.Model):
     def __str__(self):
         return self.title
 
-class Meta:
-    ordering = ['-created_at']
-@property
-def excerpt(self):
-    return self.content[:100] + '...' if len(self.content) > 100 else self.content
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Entrée'
+        verbose_name_plural = 'Entrées'
+
+    @property
+    def excerpt(self):
+        return self.content[:100] + '...' if len(self.content) > 100 else self.content

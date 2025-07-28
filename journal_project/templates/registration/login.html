@@ -1,16 +1,100 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% endblock %}
+
 {% block content %}
-<h2>Connexion</h2>
+<div class="login-container">
+    <div class="avatar-container">
+        <div class="avatar">
+            <div class="avatar-face">
+                <div class="avatar-eyes">
+                    <div class="avatar-eye">
+                        <div class="avatar-eye-lid"></div>
+                    </div>
+                    <div class="avatar-eye">
+                        <div class="avatar-eye-lid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <h2 class="text-center mb-4">Connexion</h2>
 
-<form method="post" class="entry-form">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-outline-primary">Se connecter</button>
-</form>
-<p class="mt-3">
-        Pas encore de compte ? <a class="btn btn-success"href="{% url 'register' %}">Créer un compte</a>
+    {% if form.errors %}
+    <div class="alert alert-danger">
+        Nom d'utilisateur ou mot de passe incorrect.
+    </div>
+    {% endif %}
+
+    <form method="post" class="login-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_username">Nom d'utilisateur</label>
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="fas fa-user"></i>
+                </span>
+                <input type="text" name="username" class="form-control" required id="id_username">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="id_password">Mot de passe</label>
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="fas fa-lock"></i>
+                </span>
+                <input type="password" name="password" class="form-control" required id="id_password">
+                <button type="button" class="toggle-password" aria-label="Toggle password visibility">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+        </div>
+        <button type="submit" class="login-btn">
+            <i class="fas fa-sign-in-alt me-2"></i>
+            Se connecter
+        </button>
+    </form>
+
+    <p class="text-center mt-3">
+        Pas encore de compte ? <a href="{% url 'register' %}" class="text-primary">Créer un compte</a>
     </p>
-    
-</p>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const avatar = document.querySelector('.avatar-face');
+    const usernameInput = document.getElementById('id_username');
+    const passwordInput = document.getElementById('id_password');
+    const togglePassword = document.querySelector('.toggle-password');
+
+    usernameInput.addEventListener('focus', () => {
+        avatar.classList.add('username-field-focused');
+    });
+
+    usernameInput.addEventListener('blur', () => {
+        avatar.classList.remove('username-field-focused');
+    });
+
+    passwordInput.addEventListener('focus', () => {
+        avatar.classList.add('password-field-focused');
+    });
+
+    passwordInput.addEventListener('blur', () => {
+        if (!passwordInput.type === 'password') return;
+        avatar.classList.remove('password-field-focused');
+    });
+
+    togglePassword.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        avatar.classList.toggle('password-visible');
+        this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+    });
+});
+</script>
 {% endblock %}

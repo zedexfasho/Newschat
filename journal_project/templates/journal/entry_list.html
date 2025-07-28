@@ -1,36 +1,91 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title">Mon Journal</h2>
+        <a class="btn btn-primary" href="{% url 'entry_create' %}">
+            <i class="fas fa-plus-circle me-2"></i>Nouvelle entrée
+        </a>
+    </div>
 
-<h2>Mes entrées</h2>
-
-<a class="btn btn-success mb-3" href="{% url 'entry_create' %}">+ Nouvelle entrée</a>
-
-<form method="get" class="filter-form mb-3">
-    <label for="date" class="form-label">Filtrer par date :</label>
-    <input type="date" name="date" value="{{ request.GET.date }}" class="form-control mb-2">
-    <button type="submit" class="btn btn-primary">Filtrer</button>
-</form>
-
-{% if not object_list %}
-    <div class="alert alert-warning">Aucune entrée trouvée.</div>
-{% endif %}
-
-<ul class="entry-list">
-    {% for entry in object_list %}
-        <li class="entry-item mb-3 p-3 border rounded">
-            <strong>{{ entry.title }}</strong> ({{ entry.created_at|date:"d M Y" }})<br>
-            {{ entry.content|truncatewords:20 }}<br>
-
-            {% if entry.photos %}
-                <img src="{{ entry.photos.url }}" alt="Image de l'entrée" class="entry-image mt-2" style="max-width:300px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-            {% endif %}
-            <div class="mt-2">
-                <a class="btn btn-primary btn-sm" href="{% url 'entry_edit' entry.pk %}">Modifier</a>
-                <a class="btn btn-danger btn-sm" href="{% url 'entry_delete' entry.pk %}">Supprimer</a>
+    <div class="filter-section mb-4">
+        <form method="get" class="filter-form">
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="fas fa-calendar"></i>
+                </span>
+                <input type="date" name="date" value="{{ request.GET.date }}" class="form-control" id="date">
+                <button type="submit" class="btn btn-secondary">
+                    <i class="fas fa-filter me-2"></i>Filtrer
+                </button>
             </div>
-        </li>
-    {% empty %}
-        <li>Aucune entrée.</li>
-    {% endfor %}
-</ul>
+        </form>
+    </div>
+
+    {% if not object_list %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            Aucune entrée trouvée. Commencez à écrire votre première entrée !
+        </div>
+    {% endif %}
+
+    <div class="entry-list">
+        {% for entry in object_list %}
+            <article class="entry-item">
+                <div class="entry-header">
+                    <h3 class="entry-title">
+                        <a href="{% url 'entry_edit' entry.id %}" class="entry-link">
+                            {{ entry.title }}
+                        </a>
+                    </h3>
+                    <div class="entry-metadata">
+                        <time class="entry-date" datetime="{{ entry.created_at|date:'Y-m-d' }}">
+                            <i class="far fa-calendar-alt me-2"></i>
+                            {{ entry.created_at|date:"d M Y" }}
+                        </time>
+                        {% if entry.updated_at and entry.updated_at != entry.created_at %}
+                        <span class="entry-updated">
+                            <i class="fas fa-edit me-2"></i>
+                            Modifié le {{ entry.updated_at|date:"d M Y" }}
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="entry-content">
+                    <p>{{ entry.content|truncatewords:30|linebreaks }}</p>
+                </div>
+
+                {% if entry.photos %}
+                    <div class="entry-photos">
+                        <img src="{{ entry.photos.url }}" 
+                             alt="Photo pour '{{ entry.title }}'" 
+                             class="entry-photo"
+                             loading="lazy">
+                    </div>
+                {% endif %}
+
+                <div class="entry-actions">
+                    <a class="btn btn-outline" href="{% url 'entry_edit' entry.pk %}">
+                        <i class="fas fa-edit me-2"></i>Modifier
+                    </a>
+                    <a class="btn btn-danger" href="{% url 'entry_delete' entry.pk %}">
+                        <i class="fas fa-trash-alt me-2"></i>Supprimer
+                    </a>
+                </div>
+            </article>
+        {% empty %}
+            <div class="text-center text-muted">
+                <i class="fas fa-book fa-3x mb-3"></i>
+                <p>Votre journal est vide. Créez votre première entrée !</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 {% endblock %}

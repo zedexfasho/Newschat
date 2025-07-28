@@ -2,11 +2,30 @@
 {% block content %}
 <h2>Créer un compte</h2>
 
-<form method="post" class="entry-form">
+<div id="register-errors"></div>
+
+<form method="post" class="entry-form" id="register-form">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" class="btn btn-success">S'inscrire</button>
 </form>
 
 <p>Déjà inscrit ? <a class="btn btn-primary" href="{% url 'login' %}">Connexion</a></p>
+
+{% if form.errors %}
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+    let errorDiv = document.getElementById('register-errors');
+    errorDiv.innerHTML = '';
+    {% for field in form %}
+        {% for error in field.errors %}
+            errorDiv.innerHTML += `<div class="alert alert-danger">{{ field.label }} : {{ error|escapejs }}</div>`;
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        errorDiv.innerHTML += `<div class="alert alert-danger">{{ error|escapejs }}</div>`;
+    {% endfor %}
+});
+</script>
+{% endif %}
 {% endblock %}
