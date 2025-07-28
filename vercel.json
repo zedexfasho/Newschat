@@ -1,7 +1,7 @@
 {
   "builds": [
     {
-      "src": "journal_project/manage.py",
+      "src": "journal_project/wsgi.py",
       "use": "@vercel/python",
       "config": {
         "maxLambdaSize": "50mb",
@@ -27,7 +27,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "journal_project/manage.py"
+      "dest": "journal_project/wsgi.py"
     }
   ]
 }
