@@ -1,0 +1,33 @@
+{
+  "builds": [
+    {
+      "src": "journal_project/manage.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "50mb",
+        "includeFiles": [
+          "**/*.py",
+          "**/*.html",
+          "**/*.json",
+          "**/*.sqlite3",
+          "**/static/**",
+          "**/media/**"
+        ]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/media/(.*)",
+      "dest": "/media/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "journal_project/manage.py"
+    }
+  ]
+}
