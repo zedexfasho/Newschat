@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Mes entrées</h2>
+
+<a class="btn btn-success mb-3" href="{% url 'entry_create' %}">+ Nouvelle entrée</a>
+
+<form method="get" class="filter-form mb-3">
+    <label for="date" class="form-label">Filtrer par date :</label>
+    <input type="date" name="date" value="{{ request.GET.date }}" class="form-control mb-2">
+    <button type="submit" class="btn btn-primary">Filtrer</button>
+</form>
+
+{% if not object_list %}
+    <div class="alert alert-warning">Aucune entrée trouvée.</div>
+{% endif %}
+
+<ul class="entry-list">
+    {% for entry in object_list %}
+        <li class="entry-item mb-3 p-3 border rounded">
+            <strong>{{ entry.title }}</strong> ({{ entry.created_at|date:"d M Y" }})<br>
+            {{ entry.content|truncatewords:20 }}<br>
+
+            {% if entry.photos %}
+                <img src="{{ entry.photos.url }}" alt="Image de l'entrée" class="entry-image mt-2" style="max-width:300px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            {% endif %}
+            <div class="mt-2">
+                <a class="btn btn-primary btn-sm" href="{% url 'entry_edit' entry.pk %}">Modifier</a>
+                <a class="btn btn-danger btn-sm" href="{% url 'entry_delete' entry.pk %}">Supprimer</a>
+            </div>
+        </li>
+    {% empty %}
+        <li>Aucune entrée.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

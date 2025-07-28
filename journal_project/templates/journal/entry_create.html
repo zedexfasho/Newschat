@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{% if view.object %}Modifier{% else %}Nouvelle{% endif %} entrée</h2>
+
+<form method="post" class="entry-form" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">
+        {% if view.object %}Mettre à jour{% else %}Créer{% endif %}
+    </button>
+</form>
+
+<a class="btn btn-danger" href="{% url 'entry_list' %}">← Retour à la liste</a>
+{% endblock %}

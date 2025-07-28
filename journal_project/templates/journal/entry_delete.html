@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Supprimer l'entrée : "{{ object.title }}"</h2>
+
+<p>Es-tu sûr de vouloir supprimer cette entrée ?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Oui, supprimer</button>
+    <a class="btn btn-secondary" href="{% url 'entry_list' %}">Non, annuler</a>
+</form>
+{% endblock %}

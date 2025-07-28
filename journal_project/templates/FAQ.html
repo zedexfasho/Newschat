@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Nous contacter - Aide & Suggestions</h2>
+
+<p>Si vous avez des questions, des suggestions ou des préoccupations, nous serions ravis de vous aider. Vous pouvez nous contacter par e-mail ou par téléphone :</p>
+
+<h4>Email :</h4>
+<p><a href="mailto:support@journal.com">support@journal.com</a></p>
+
+<h4>Numéro de téléphone :</h4>
+<p>+221 77 999 44 77</p>
+
+<p>Vous pouvez également remplir le formulaire ci-dessous pour nous envoyer vos suggestions directement :</p>
+
+<form method="post" class="contact-form">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="name" class="form-label">Nom :</label>
+        <input type="text" name="name" id="name" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email :</label>
+        <input type="email" name="email" id="email" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="message" class="form-label">Message :</label>
+        <textarea name="message" id="message" class="form-control" rows="4" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Envoyer</button>
+</form>
+{% endblock %}
