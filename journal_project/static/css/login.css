@@ -204,17 +204,17 @@ h2 {
     margin-right: 0.5rem;
 }
 
-a {
-    color: var(--primary-color);
+
+.entry-title a, .entry-title {
+    color: #111 !important;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
-a:hover {
-    color: var(--secondary-color);
+.entry-title a:hover {
+    color: #111 !important;
     text-decoration: none;
-}
-    margin-top: 20px;
+    margin-top: 0;
 }
 
 .avatar-eye {

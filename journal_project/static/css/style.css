@@ -1,12 +1,18 @@
 /* TITRE ET CONTENU DES ENTRÉES : COULEURS LISIBLES */
-.entry-title {
+.entry-title, .entry-title a {
     color: #111 !important;
     font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.entry-title a:hover {
+    color: #111 !important;
+    text-decoration: none;
 }
 .entry-content {
-    color: var(--text-secondary) !important;
+    color: #111 !important;
     margin-bottom: 1.5rem;
     line-height: 1.6;
 }
@@ -147,7 +153,7 @@ main {
 
 /* Harmonisation : texte des entrées toujours lisible */
 .entry-content {
-    color: var(--text-secondary);
+    color: #111;
     margin-bottom: 1.5rem;
     line-height: 1.6;
 }
@@ -1090,7 +1096,7 @@ label {
 .mb-auto { margin-bottom: auto; }
 .ms-auto { margin-left: auto; }
 .me-auto { margin-right: auto; }
-}
+
 
 .logo-lines {
     stroke: white;
